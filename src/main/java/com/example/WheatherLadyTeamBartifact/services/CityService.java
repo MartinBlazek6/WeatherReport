@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -67,22 +68,30 @@ public class CityService {
         return new ResponseEntity<>(getCityByCityName(params.getCity()).getWeather(), HttpStatus.OK);
 
     }
-    public ResponseEntity setRegion(UpdateCityDTO cityDTO){
-        String statusOk = "City " + cityDTO.getOld() + " renamed to " + cityDTO.getNewN();
+    public ResponseEntity setRegion(UpdateCityDTO cityDTO) {
+        boolean isCityUpdated = cityDTO.getNewN() != null;
+        boolean isRegionUpdated = cityDTO.getReg() != null;
+        boolean isPopulationUpdated = cityDTO.getPop() != null;
+        String finalStatus;
         try {
             City city = getCityByCityName(cityDTO.getOld());
-            city.setName(cityDTO.getNewN());
+            String cityName = isCityUpdated && !Objects.equals(city.getName(), cityDTO.getNewN()) ? "City " + city.getName() + " renamed to " + cityDTO.getNewN() : "City name is " + cityDTO.getOld();
+            String regionName = isRegionUpdated ? "City " + city.getName() + " added to region  " + cityDTO.getReg() : "City is in " + city.getRegion().getName() + " region";
+            String populationNumber = (isPopulationUpdated && !Objects.equals(city.getPopulation(), cityDTO.getPop())) ? "Population was " + city.getPopulation() + " now is " + cityDTO.getPop() : city.getPopulation()==null ?"Population is 0 citizens" : "Population is " + city.getPopulation() + " citizens";
+            finalStatus = cityName + "\n" + regionName + "\n" + populationNumber;
+            city.setName(isCityUpdated? cityDTO.getNewN() : city.getName());
             updateCity(city);
             if (regionRepo.findByName(cityDTO.getReg()) == null) {
                 Region region = new Region();
                 region.setName(cityDTO.getReg());
-                city.setRegion(region);
+                city.setRegion(isRegionUpdated ? region : city.getRegion());
+                city.setPopulation(!isPopulationUpdated ? city.getPopulation() : cityDTO.getPop());
                 regionRepo.save(region);
                 updateCity(city);
 
             } else {
                 Region region = regionRepo.getRegionByName(cityDTO.getReg());
-                city.setRegion(region);
+                city.setRegion(isRegionUpdated ? region : city.getRegion());
                 regionRepo.saveAndFlush(region);
                 updateCity(city);
             }
@@ -90,7 +99,7 @@ public class CityService {
             log.warn(String.valueOf(e));
             return new ResponseEntity<>("City " + cityDTO.getOld() + " does not exist", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(statusOk, HttpStatus.OK);
+        return new ResponseEntity<>(finalStatus, HttpStatus.OK);
     }
 
     public void updateCity(City city) {
