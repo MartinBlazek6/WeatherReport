@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ import static java.rmi.server.LogStream.log;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 public class Controller {
 
     private final CityService cityService;
@@ -44,6 +47,12 @@ public class Controller {
 
     @GetMapping("/get")
     public ResponseEntity getAll(@RequestBody String cityName) {
+        cityService.gettAllCitiesByRegion(cityName);
+        return new ResponseEntity<>(cityService.gettAllCitiesByRegion(cityName), HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{cityName}")
+    public ResponseEntity getAllByVariable(@PathVariable String cityName) {
         cityService.gettAllCitiesByRegion(cityName);
         return new ResponseEntity<>(cityService.gettAllCitiesByRegion(cityName), HttpStatus.OK);
     }
