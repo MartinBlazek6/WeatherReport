@@ -33,6 +33,8 @@ public class CityService {
     private final CityRepo cityRepository;
 
     public void addCity(String city) {
+        city = city.replace("{\"string\":\"","");
+        city = city.replace("\"}","");
         cityRepository.save(new City(city));
     }
 
@@ -76,7 +78,7 @@ public class CityService {
         try {
             City city = getCityByCityName(cityDTO.getOld());
             String cityName = isCityUpdated && !Objects.equals(city.getName(), cityDTO.getNewN()) ? "City " + city.getName() + " renamed to " + cityDTO.getNewN() : "City name is " + cityDTO.getOld();
-            String regionName = isRegionUpdated ? "City " + city.getName() + " added to region  " + cityDTO.getReg() : "City is in " + city.getRegion().getName() + " region";
+            String regionName = isRegionUpdated ? "City added to region  " + cityDTO.getReg() :city.getPopulation()==null ? "City is not in region yet " : "City is in " + city.getRegion().getName() + " region";
             String populationNumber = (isPopulationUpdated && !Objects.equals(city.getPopulation(), cityDTO.getPop())) ? "Population was " + city.getPopulation() + " now is " + cityDTO.getPop() : city.getPopulation()==null ?"Population is 0 citizens" : "Population is " + city.getPopulation() + " citizens";
             finalStatus = cityName + "\n" + regionName + "\n" + populationNumber;
             city.setName(isCityUpdated? cityDTO.getNewN() : city.getName());

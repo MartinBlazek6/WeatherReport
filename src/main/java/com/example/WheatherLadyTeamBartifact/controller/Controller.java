@@ -34,10 +34,6 @@ import static java.rmi.server.LogStream.log;
 public class Controller {
 
     private final CityService cityService;
-    private final String API_KEY = System.getenv("API_KEY");
-    private final RegionRepo regionRepo;
-    private final CityRepo cityRepo;
-    private final WeatherRepo weatherRepo;
 
     @PostMapping("/add")
     public ResponseEntity create(@RequestBody String cityName) {
