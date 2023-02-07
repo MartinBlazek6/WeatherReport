@@ -71,7 +71,7 @@
     });
 }}>
     <input type="text" bind:value={stringValue}/>
-    <button type="submit">Send String</button>
+    <button type="submit">Add City</button>
 </form>
 <br>
 
@@ -85,7 +85,7 @@
     <input type="text" bind:value={newN} placeholder="New Name"/>
     <input type="text" bind:value={reg} placeholder="add Region"/>
     <input type="text" bind:value={pop} placeholder="set population"/>
-    <button type="submit">Send Form</button>
+    <button type="submit">Update City</button>
 </form>
 
 <section class="vh-100">
