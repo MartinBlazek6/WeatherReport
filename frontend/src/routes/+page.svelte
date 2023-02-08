@@ -7,7 +7,7 @@
     let cities = [];
 
     onMount(async () => {
-        const res = await fetch(`http://localhost:8081/get/Martin`);
+        const res = await fetch(`http://localhost:8081/get/Zilina`);
         cities = await res.json();
     });
 
