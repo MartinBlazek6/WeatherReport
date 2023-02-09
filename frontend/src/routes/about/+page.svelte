@@ -1,26 +1,71 @@
+
+<script>
+
+	let stringValue;
+	async function sendString(string) {
+		try {
+			const response = await fetch('http://localhost:8081/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({string})
+			});
+			return await response.json();
+		} catch (error) {
+			console.error('Error sending string:', error);
+		}
+	}
+	let city,errorMessage,countryCode
+
+
+	const handleSubmit = async () => {
+		const data = {
+			city,
+			countryCode
+		};
+
+		try {
+			const response = await fetch('http://localhost:8081/weather', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			});
+
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			console.log('Successfully sent data:', JSON.stringify(data));
+		} catch (error) {
+			console.error('An error occurred:', error);
+			errorMessage = error.message;
+		}
+	};
+</script>
 <svelte:head>
 	<title>About</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
 <div class="text-column">
-	<h1>About this app</h1>
 
-	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
-		following into your command line and following the prompts:
-	</p>
+	<input type="text" bind:value={city} placeholder="City" />
+	<input type="text" bind:value={countryCode} placeholder="SK" />
+	<button on:click={handleSubmit}>Submit</button>
+	{#if errorMessage}
+		<p style="color: red">{errorMessage}</p>
+	{/if}
 
-	<pre>npm create svelte@latest</pre>
-
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
-
-	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
-	</p>
+	<br>
+	<form on:submit|preventDefault={() => {
+  sendString(stringValue)
+    .then(data => {
+      console.log('String sent successfully:', data);
+    });
+}}>
+		<input type="text" bind:value={stringValue}/>
+		<button type="submit">Add City</button>
+	</form>
 </div>

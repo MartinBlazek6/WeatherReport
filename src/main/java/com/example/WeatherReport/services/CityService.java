@@ -31,10 +31,19 @@ public class CityService {
 
     private final CityRepo cityRepository;
 
-    public void addCity(String city) {
-        city = city.replace("{\"string\":\"","");
-        city = city.replace("\"}","");
+    public ResponseEntity addCity(String city) {
+        city = city.replace("{\"string\":\"", "");
+        city = city.replace("\"}", "");
+
+        try {
+          if (cityRepository.getCityByName(city).getName().equals(city)){
+              return new ResponseEntity<>("City "+city+" already exist", HttpStatus.METHOD_NOT_ALLOWED);
+          }
+        } catch (Exception ignored) {}
         cityRepository.save(new City(city));
+            return new ResponseEntity<>("City "+city+" added", HttpStatus.OK);
+
+
     }
 
     public void deleteEvidence(UUID id) {
@@ -44,14 +53,16 @@ public class CityService {
     public UUID getIdFromCityName(String cityName) {
         return cityRepository.getCityByName(cityName).getId();
     }
-   public City getCityByCityName(String cityName) {
+
+    public City getCityByCityName(String cityName) {
         return cityRepository.getCityByName(cityName);
     }
 
     public List<City> getAllCitiesByRegion(String regionName) {
         return regionRepo.findByName(regionName).getCities();
     }
-    public ResponseEntity getCityWeather(WeatherInfoByCityAndCountryCode params){
+
+    public ResponseEntity getCityWeather(WeatherInfoByCityAndCountryCode params) {
         if (getCityByCityName(params.getCity()).getWeather() == null) {
             RestTemplate restTemplate = new RestTemplate();
             var a = restTemplate.getForObject("https://api.openweathermap.org/data/2.5/weather?q=" + params.getCity() + "," + params.getCountryCode().toUpperCase() + "&appid=" + API_KEY + "&units=metric", Temperatures.class);
@@ -69,6 +80,7 @@ public class CityService {
         return new ResponseEntity<>(getCityByCityName(params.getCity()).getWeather(), HttpStatus.OK);
 
     }
+
     public ResponseEntity setRegion(UpdateCityDTO cityDTO) {
         boolean isCityUpdated = cityDTO.getNewN() != null;
         boolean isRegionUpdated = cityDTO.getReg() != null;
@@ -77,10 +89,10 @@ public class CityService {
         try {
             City city = getCityByCityName(cityDTO.getOld());
             String cityName = isCityUpdated && !Objects.equals(city.getName(), cityDTO.getNewN()) ? "City " + city.getName() + " renamed to " + cityDTO.getNewN() : "City name is " + cityDTO.getOld();
-            String regionName = isRegionUpdated ? "City added to region  " + cityDTO.getReg() :city.getPopulation()==null ? "City is not in region yet " : "City is in " + city.getRegion().getName() + " region";
-            String populationNumber = (isPopulationUpdated && !Objects.equals(city.getPopulation(), cityDTO.getPop())) ? "Population was " + city.getPopulation() + " now is " + cityDTO.getPop() : city.getPopulation()==null ?"Population is 0 citizens" : "Population is " + city.getPopulation() + " citizens";
+            String regionName = isRegionUpdated ? "City added to region  " + cityDTO.getReg() : city.getPopulation() == null ? "City is not in region yet " : "City is in " + city.getRegion().getName() + " region";
+            String populationNumber = (isPopulationUpdated && !Objects.equals(city.getPopulation(), cityDTO.getPop())) ? "Population was " + city.getPopulation() + " now is " + cityDTO.getPop() : city.getPopulation() == null ? "Population is 0 citizens" : "Population is " + city.getPopulation() + " citizens";
             finalStatus = cityName + "\n" + regionName + "\n" + populationNumber;
-            city.setName(isCityUpdated? cityDTO.getNewN() : city.getName());
+            city.setName(isCityUpdated ? cityDTO.getNewN() : city.getName());
             updateCity(city);
             if (regionRepo.findByName(cityDTO.getReg()) == null) {
                 Region region = new Region();
@@ -104,7 +116,7 @@ public class CityService {
     }
 
     public void updateCity(City city) {
-         cityRepository.saveAndFlush(city);
+        cityRepository.saveAndFlush(city);
     }
 
 

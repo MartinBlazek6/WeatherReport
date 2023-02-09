@@ -24,8 +24,8 @@ public class Controller {
 
     @PostMapping("/add")
     public ResponseEntity create(@RequestBody String cityName) {
-        cityService.addCity(cityName);
-        return new ResponseEntity<>("City added", HttpStatus.OK);
+
+   return cityService.addCity(cityName);
     }
 
     @GetMapping("/get")
