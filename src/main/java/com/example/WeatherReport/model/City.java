@@ -9,10 +9,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -25,6 +27,7 @@ public class City {
     @JsonIgnore
     private UUID id;
     private String name;
+    private Long lastWeatherCall;
     private Long population;
     @OneToOne(cascade = CascadeType.ALL)
     private Weather weather;
