@@ -65,7 +65,7 @@ public class CityService {
     }
 
     public ResponseEntity getCityWeather(WeatherInfoByCityAndCountryCode params) {
-        if (getCityByCityName(params.getCity()).getWeather() == null || getCityByCityName(params.getCity()).getLastWeatherCall()>System.currentTimeMillis()) {
+        if (getCityByCityName(params.getCity()).getWeather() == null || getCityByCityName(params.getCity()).getLastWeatherCall()<System.currentTimeMillis()) {
             RestTemplate restTemplate = new RestTemplate();
             var restTemplateForObject =
                     restTemplate.getForObject("https://api.openweathermap.org/data/2.5/weather?q="
