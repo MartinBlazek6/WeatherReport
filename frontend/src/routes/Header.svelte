@@ -6,9 +6,9 @@
 
 <header>
 	<div class="corner">
-		<a href="https://kit.svelte.dev">
-			<img src={logo} alt="SvelteKit" />
-		</a>
+<!--		<a href="https://kit.svelte.dev">-->
+<!--			<img src={logo} alt="SvelteKit" />-->
+<!--		</a>-->
 	</div>
 
 	<nav>
@@ -32,7 +32,8 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/sveltejs/kit">
+		<a href="https://github.com/MartinBlazek6/WeatherReport"
+		target="_blank">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>

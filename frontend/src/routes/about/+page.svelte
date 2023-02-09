@@ -51,14 +51,6 @@
 
 <div class="text-column">
 
-	<input type="text" bind:value={city} placeholder="City" />
-	<input type="text" bind:value={countryCode} placeholder="SK" />
-	<button on:click={handleSubmit}>Submit</button>
-	{#if errorMessage}
-		<p style="color: red">{errorMessage}</p>
-	{/if}
-
-	<br>
 	<form on:submit|preventDefault={() => {
   sendString(stringValue)
     .then(data => {
@@ -68,4 +60,13 @@
 		<input type="text" bind:value={stringValue}/>
 		<button type="submit">Add City</button>
 	</form>
+
+	<br>
+
+	<input type="text" bind:value={city} placeholder="City" />
+	<input type="text" bind:value={countryCode} placeholder="SK" />
+	<button on:click={handleSubmit}>Get Weather</button>
+	{#if errorMessage}
+		<p style="color: red">{errorMessage}</p>
+	{/if}
 </div>
