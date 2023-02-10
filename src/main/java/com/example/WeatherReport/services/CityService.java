@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 public class CityService {
     private final String API_KEY = System.getenv("API_KEY");
     private final RegionRepo regionRepo;
-    private final CityRepo cityRepo;
     private final WeatherRepo weatherRepo;
 
     private final CityRepo cityRepository;
@@ -41,9 +40,9 @@ public class CityService {
             if (cityRepository.getCityByName(city).getName().equals(city)) {
                 return new ResponseEntity<>("City " + city + " already exist", HttpStatus.METHOD_NOT_ALLOWED);
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
         cityRepository.save(new City(city));
+        getCityWeather(new WeatherInfoByCityAndCountryCode(cityRepository.getCityByName(city),"SK"));
         return new ResponseEntity<>("City " + city + " added", HttpStatus.OK);
 
 

@@ -16,7 +16,8 @@
 			console.error('Error sending string:', error);
 		}
 	}
-	let city,errorMessage,countryCode
+	let city,errorMessage
+	let countryCode = 'SK'
 
 
 	const handleSubmit = async () => {
@@ -62,9 +63,9 @@
 	</form>
 
 	<br>
-
+	<h4>Use this to get newst weather</h4>
 	<input type="text" bind:value={city} placeholder="City" />
-	<input type="text" bind:value={countryCode} placeholder="SK" />
+<!--	<input type="text" bind:value={countryCode} placeholder="SK" />-->
 	<button on:click={handleSubmit}>Get Weather</button>
 	{#if errorMessage}
 		<p style="color: red">{errorMessage}</p>
