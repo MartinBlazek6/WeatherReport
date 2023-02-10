@@ -44,9 +44,10 @@
         {#each data as city}
             <h4 class="mb-1 sfw-normal">{city.name}</h4>
             <p class="mb-2">Current temperature: <strong>{city.weather.temp}°C</strong></p>
-            <p>Min: <strong>{city.weather.maxTemp}°C</strong></p>
-            <p>Max: <strong>{city.weather.minTemp}°C</strong>, Min: <strong>3.89°C</strong></p>
-            <p>Feels like: <strong>{city.weather.minTemp}°C</strong>, Min: <strong>3.89°C</strong></p>
+            <p>Min: <strong>{city.weather.minTemp}°C</strong></p>
+            <p>Max: <strong>{city.weather.maxTemp}°C</strong></p>
+<!--            <p>Feels like: <strong>{city.weather.feelsLike}°C</strong></p> IDK why some cities dont have that-->
+
         {/each}
     </ul>
 {/if}

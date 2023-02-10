@@ -80,7 +80,7 @@ public class CityService {
                             restTemplateForObject.getCoord().getLat());
             City city = getCityByCityName(params.getCity());
             city.setWeather(weather);
-            city.setLastWeatherCall(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
+            city.setLastWeatherCall(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(15));
             weatherRepo.save(weather);
             updateCity(city);
             log.warn("External API has been called");
