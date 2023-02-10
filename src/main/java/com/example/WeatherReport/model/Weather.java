@@ -21,16 +21,18 @@ public class Weather {
     private Double maxTemp;
     private Double minTemp;
     private Double temp;
+    private Double feelsLike;
     private Double longitude;
     private Double latitude;
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private City city;
 
-    public Weather(Double maxTemp, Double minTemp, Double temp, Double longitude, Double latitude) {
+    public Weather(Double maxTemp, Double minTemp, Double temp,Double feelsLike, Double longitude, Double latitude) {
         this.maxTemp = maxTemp;
         this.minTemp = minTemp;
         this.temp = temp;
+        this.feelsLike = feelsLike;
         this.longitude = longitude;
         this.latitude = latitude;
     }

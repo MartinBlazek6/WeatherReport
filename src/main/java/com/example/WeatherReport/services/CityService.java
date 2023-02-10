@@ -38,12 +38,13 @@ public class CityService {
         city = city.replace("\"}", "");
 
         try {
-          if (cityRepository.getCityByName(city).getName().equals(city)){
-              return new ResponseEntity<>("City "+city+" already exist", HttpStatus.METHOD_NOT_ALLOWED);
-          }
-        } catch (Exception ignored) {}
+            if (cityRepository.getCityByName(city).getName().equals(city)) {
+                return new ResponseEntity<>("City " + city + " already exist", HttpStatus.METHOD_NOT_ALLOWED);
+            }
+        } catch (Exception ignored) {
+        }
         cityRepository.save(new City(city));
-            return new ResponseEntity<>("City "+city+" added", HttpStatus.OK);
+        return new ResponseEntity<>("City " + city + " added", HttpStatus.OK);
 
 
     }
@@ -65,7 +66,7 @@ public class CityService {
     }
 
     public ResponseEntity getCityWeather(WeatherInfoByCityAndCountryCode params) {
-        if (getCityByCityName(params.getCity()).getWeather() == null || getCityByCityName(params.getCity()).getLastWeatherCall()<System.currentTimeMillis()) {
+        if (getCityByCityName(params.getCity()).getWeather() == null || getCityByCityName(params.getCity()).getLastWeatherCall() < System.currentTimeMillis()) {
             RestTemplate restTemplate = new RestTemplate();
             var restTemplateForObject =
                     restTemplate.getForObject("https://api.openweathermap.org/data/2.5/weather?q="
@@ -75,6 +76,7 @@ public class CityService {
                     new Weather(restTemplateForObject.getMain().getTemp_max(),
                             restTemplateForObject.getMain().getTemp_min(),
                             restTemplateForObject.getMain().getTemp(),
+                            restTemplateForObject.getMain().getFeels_like(),
                             restTemplateForObject.getCoord().getLon(),
                             restTemplateForObject.getCoord().getLat());
             City city = getCityByCityName(params.getCity());

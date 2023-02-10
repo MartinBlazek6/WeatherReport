@@ -35,6 +35,8 @@ public class Controller {
 
     @GetMapping("/get/{regionName}")
     public ResponseEntity getAllByVariable(@PathVariable String regionName) {
+        cityService.getAllCitiesByRegion(regionName)
+                .forEach(city ->  cityService.getCityWeather(new WeatherInfoByCityAndCountryCode(city,"SK")));
         return new ResponseEntity<>(cityService.getAllCitiesByRegion(regionName), HttpStatus.OK);
     }
 

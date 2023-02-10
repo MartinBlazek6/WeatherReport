@@ -35,7 +35,7 @@
 
 </script>
 
-
+<h2>Search Weather report by region</h2>
 <input type="text" bind:value={parameter} on:input={handleSubmit} placeholder="Region" />
 
 {#if data.length}
@@ -46,6 +46,7 @@
             <p class="mb-2">Current temperature: <strong>{city.weather.temp}°C</strong></p>
             <p>Min: <strong>{city.weather.maxTemp}°C</strong></p>
             <p>Max: <strong>{city.weather.minTemp}°C</strong>, Min: <strong>3.89°C</strong></p>
+            <p>Feels like: <strong>{city.weather.minTemp}°C</strong>, Min: <strong>3.89°C</strong></p>
         {/each}
     </ul>
 {/if}
