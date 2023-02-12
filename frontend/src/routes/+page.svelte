@@ -1,47 +1,50 @@
 <script>
-    import {onMount} from "svelte";
-
     /**
-     * @type {any[]}
+     * @type {string}
      */
-    let cities = [];
-    let region = 'Bratislava';
-
-    onMount(async () => {
-        const res = await fetch(`http://localhost:8081/get/`+region);
-        cities = await res.json();
-    });
-
 
     let parameter = '';
-    let data = [];
+    let cityName = '';
+    let citiesData = [];
     let errorMessage = '';
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`http://localhost:8081/get/${parameter}`);
+            const response = await fetch(`http://localhost:8081/get/region/${parameter}`);
 
             // if (!response.ok) {
             //     throw new Error('Network response was not ok');
             // }
 
-            data = await response.json();
-            console.log('Successfully fetched data:', data);
+            citiesData = await response.json();
+            console.log('Successfully fetched data:', citiesData);
         } catch (error) {
             console.error('An error occurred:', error);
             errorMessage = error.message;
         }
     };
 
+    let city = "";
+    let data = null;
+
+    async function fetchData() {
+        const url = `http://localhost:8081/get/city/${city}`;
+        const response = await fetch(url);
+        const jsonData = await response.json();
+        data = jsonData;}
+
 </script>
 
 <h2>Search Weather report by region</h2>
 <input type="text" bind:value={parameter} on:input={handleSubmit} placeholder="Region" />
 
-{#if data.length}
+<h2>Search Weather report by City</h2>
+<input type="text" bind:value={city} on:input={fetchData} placeholder="City" />
+
+{#if citiesData.length}
     <ul>
        <h1>Here is weather report for region {parameter}</h1>
-        {#each data as city}
+        {#each citiesData as city}
             <h4 class="mb-1 sfw-normal">{city.name}</h4>
             <p class="mb-2">Current temperature: <strong>{city.weather.temp}°C</strong></p>
             <p>Min: <strong>{city.weather.minTemp}°C</strong></p>
@@ -50,8 +53,18 @@
 
         {/each}
     </ul>
+{:else}
+<!--    <p>Loading</p> for loading -->
 {/if}
-
+<div>
+    {#if data}
+        <h1>Here is weather report for city {data.name}</h1>
+        <h4 class="mb-1 sfw-normal">{data.name}</h4>
+        <p class="mb-2">Current temperature: <strong>{data.weather.temp}°C</strong></p>
+        <p>Min: <strong>{data.weather.minTemp}°C</strong></p>
+        <p>Max: <strong>{data.weather.maxTemp}°C</strong></p>
+    {/if}
+</div>
 
 <section class="vh-100">
 

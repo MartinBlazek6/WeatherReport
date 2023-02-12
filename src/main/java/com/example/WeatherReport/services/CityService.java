@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
@@ -65,28 +66,28 @@ public class CityService {
     }
 
     public ResponseEntity getCityWeather(WeatherInfoByCityAndCountryCode params) {
-        if (getCityByCityName(params.getCity()).getWeather() == null || getCityByCityName(params.getCity()).getLastWeatherCall() < System.currentTimeMillis()) {
-            RestTemplate restTemplate = new RestTemplate();
-            var restTemplateForObject =
-                    restTemplate.getForObject("https://api.openweathermap.org/data/2.5/weather?q="
-                            + params.getCity() + "," + params.getCountryCode().toUpperCase() + "&appid="
-                            + API_KEY + "&units=metric", Temperatures.class);
-            Weather weather =
-                    new Weather(restTemplateForObject.getMain().getTemp_max(),
-                            restTemplateForObject.getMain().getTemp_min(),
-                            restTemplateForObject.getMain().getTemp(),
-                            restTemplateForObject.getMain().getFeels_like(),
-                            restTemplateForObject.getCoord().getLon(),
-                            restTemplateForObject.getCoord().getLat());
-            City city = getCityByCityName(params.getCity());
-            city.setWeather(weather);
-            city.setLastWeatherCall(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(15));
-            weatherRepo.save(weather);
-            updateCity(city);
-            log.warn("External API has been called");
-        } else {
-            log.info("Internal database has been called");
-        }
+            if (getCityByCityName(params.getCity()).getWeather() == null || getCityByCityName(params.getCity()).getLastWeatherCall() < System.currentTimeMillis()) {
+                RestTemplate restTemplate = new RestTemplate();
+                var restTemplateForObject =
+                        restTemplate.getForObject("https://api.openweathermap.org/data/2.5/weather?q="
+                                + params.getCity() + "," + params.getCountryCode().toUpperCase() + "&appid="
+                                + API_KEY + "&units=metric", Temperatures.class);
+                Weather weather =
+                        new Weather(restTemplateForObject.getMain().getTemp_max(),
+                                restTemplateForObject.getMain().getTemp_min(),
+                                restTemplateForObject.getMain().getTemp(),
+                                restTemplateForObject.getMain().getFeels_like(),
+                                restTemplateForObject.getCoord().getLon(),
+                                restTemplateForObject.getCoord().getLat());
+                City city = getCityByCityName(params.getCity());
+                city.setWeather(weather);
+                city.setLastWeatherCall(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(15));
+                weatherRepo.save(weather);
+                updateCity(city);
+                log.warn("External API has been called");
+            } else {
+                log.info("Internal database has been called");
+            }
 
 
         return new ResponseEntity<>(getCityByCityName(params.getCity()).getWeather(), HttpStatus.OK);

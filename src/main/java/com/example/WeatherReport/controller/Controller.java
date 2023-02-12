@@ -1,5 +1,6 @@
 package com.example.WeatherReport.controller;
 
+import com.example.WeatherReport.model.City;
 import com.example.WeatherReport.model.DTO.WeatherInfoByCityAndCountryCode;
 import com.example.WeatherReport.model.DTO.UpdateCityDTO;
 import com.example.WeatherReport.services.CityService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.IntStream;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,11 +36,30 @@ public class Controller {
         return new ResponseEntity<>(cityService.getAllCitiesByRegion(regionName), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{regionName}")
+    @GetMapping("/get/region/{regionName}")
     public ResponseEntity getAllByVariable(@PathVariable String regionName) {
-        cityService.getAllCitiesByRegion(regionName)
-                .forEach(city ->  cityService.getCityWeather(new WeatherInfoByCityAndCountryCode(city,"SK")));
+            try { // Looping it like this will I will avoid throwing ConcurrentModificationException
+                IntStream.range(0,cityService.getAllCitiesByRegion(regionName).size())
+                        .forEach(i->cityService.getCityWeather(new WeatherInfoByCityAndCountryCode(cityService.getAllCitiesByRegion(regionName).get(i),"SK")));
+            } catch (Exception e) {
+           log.error(String.valueOf(e));
+                log.warn("Region not found");
+                return new ResponseEntity<>("Region not found", HttpStatus.NOT_FOUND);
+            }
         return new ResponseEntity<>(cityService.getAllCitiesByRegion(regionName), HttpStatus.OK);
+    }
+
+    @GetMapping("/get/city/{cityName}")
+    public ResponseEntity getByVariable(@PathVariable String cityName) {
+        try {
+          cityService.getCityWeather(new WeatherInfoByCityAndCountryCode(cityService.getCityByCityName(cityName),"SK"));
+            return new ResponseEntity<>(cityService.getCityByCityName(cityName), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(String.valueOf(e));
+            log.warn("City not found");
+            return new ResponseEntity<>("Region not found", HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping("/weather")

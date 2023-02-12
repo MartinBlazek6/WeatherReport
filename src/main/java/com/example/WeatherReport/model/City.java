@@ -27,6 +27,7 @@ public class City {
     @JsonIgnore
     private UUID id;
     private String name;
+    @JsonIgnore
     private Long lastWeatherCall;
     private Long population;
     @OneToOne(cascade = CascadeType.ALL)
