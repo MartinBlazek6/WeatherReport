@@ -55,8 +55,8 @@ public class Controller {
           cityService.getCityWeather(new WeatherInfoByCityAndCountryCode(cityService.getCityByCityName(cityName),"SK"));
             return new ResponseEntity<>(cityService.getCityByCityName(cityName), HttpStatus.OK);
         } catch (Exception e) {
-            log.error(String.valueOf(e));
-            log.warn("City not found");
+//            log.error(String.valueOf(e));
+//            log.warn("City not found");
             return new ResponseEntity<>("Region not found", HttpStatus.NOT_FOUND);
         }
 
