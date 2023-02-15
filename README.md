@@ -57,12 +57,6 @@ This project fetches data from https://openweathermap.org/ and processes it with
 | `city` | `city` | weather forecast for city |
 
 
-#### add(num1, num2)
-
-
-Takes two numbers and returns the sum.
-
-/get/region/trnava
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
