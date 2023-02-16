@@ -40,40 +40,66 @@ async function fetchData() {
 <h2>Search Weather report by City</h2>
 <input type="text" bind:value={city} on:input={fetchData} placeholder="Enter city name"/>
 
+{#if data}
+    <h1>Weather report for city {data.name}</h1>
+    <br>
+    <div>
+        <div class="weather-card-lonely">
+            <div class="location">
+                <h2 >{data.name}</h2>
+            </div>
+            <div class="coordinates">
+                <p>Longitude: <span >{data.weather.longitude}</span></p>
+                <p>Latitude: <span >{data.weather.latitude}</span></p>
+            </div>
+            <div class="temperature">
+                <h1 >{data.weather.temp}°C</h1>
+                <div class="min-max-temperature">
+                    <p>Min: <span >{data.weather.minTemp}°C</span></p>
+                    <p>Max: <span >{data.weather.maxTemp}°C</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{/if}
+
 {#if citiesData.length}
     <ul>
-        <h3>Weather report for region {parameter}</h3>
+        <h1>Weather report for selected region</h1>
+        <div class="card-container">
         {#each citiesData as city}
-            <li>
-                <h4>{city.name}</h4>
-                <p>Current temperature: <strong>{city.weather.temp}°C</strong></p>
-                <p>Min: <strong>{city.weather.minTemp}°C</strong></p>
-                <p>Max: <strong>{city.weather.maxTemp}°C</strong></p>
-            </li>
+
+
+<!--                    <div class="weather-card">-->
+
+                        <div class="weather-card">
+                            <div class="location">
+                                <h2 id="city-name">{city.name}</h2>
+                            </div>
+                            <div class="temperature">
+                                <h1 id="current-temperature">{city.weather.temp}°C</h1>
+                                <div class="min-max-temperature">
+                                    <p>Min: <span id="min-temperature">{city.weather.minTemp}°C</span></p>
+                                    <p>Max: <span id="max-temperature">{city.weather.maxTemp}°C</span></p>
+                                </div>
+                            </div>
+                        </div>
+
         {/each}
+        </div>
     </ul>
 {:else if errorMessage}
-<!--    <p class="error">{errorMessage}</p>-->
+    <!--    <p class="error">{errorMessage}</p>-->
 {:else}
     <!-- You could add a "Loading" indicator here... -->
 {/if}
 
-{#if data}
-    <div>
-        <h3>Weather report for city {data.name}</h3>
-        <h4>{data.name}</h4>
-        <p>Current temperature: <strong>{data.weather.temp}°C</strong></p>
-        <p>Min: <strong>{data.weather.minTemp}°C</strong></p>
-        <p>Max: <strong>{data.weather.maxTemp}°C</strong></p>
-        <p>Longitude: <strong>{data.weather.longitude}</strong></p>
-        <p>Latitude: <strong>{data.weather.latitude}</strong></p>
-    </div>
-{/if}
 
 
 <style>
     body {
         font-family: sans-serif;
+
     }
 
     h2 {
@@ -120,4 +146,121 @@ async function fetchData() {
         font-size: 16px;
         margin-top: 12px;
     }
+
+    .weather-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 500px;
+    }
+
+    .location {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .image {
+        margin-bottom: 20px;
+    }
+
+    .image img {
+        border-radius: 10px;
+        max-width: 100%;
+    }
+
+    .coordinates {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .coordinates p {
+        margin: 0;
+    }
+
+    .coordinates span {
+        margin-left: 5px;
+    }
+
+    .temperature {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .temperature h1 {
+        font-size: 80px;
+        margin: 0;
+    }
+
+    .min-max-temperature {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .min-max-temperature p {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .min-max-temperature span {
+        margin-left: 5px;
+    }
+
+    .conditions {
+        background-color: #f4f4f4;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        width: 100%;
+    }
+    .card-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .weather-card {
+        width: 30%;
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .weather-card-lonely {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        background-image: linear-gradient(to bottom right, #B3E5FC, #81D4FA);
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 500px;
+        margin: 0 auto;
+        animation: colorChange 5s infinite;
+    }
+    @keyframes colorChange {
+        0% { background-image: linear-gradient(to bottom right, #B3E5FC, #81D4FA); }
+        50% { background-image: linear-gradient(to bottom right, #81D4FA, #B3E5FC); }
+        100% { background-image: linear-gradient(to bottom right, #B3E5FC, #81D4FA); }
+    }
+
+
 </style>
