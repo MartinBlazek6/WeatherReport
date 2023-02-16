@@ -1,0 +1,6 @@
+
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(†«ÌÇøÿÿÿÿ
+o	java:S116"URename this field "feels_like" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æ¶ˆüÿÿÿÿ
+h	java:S116	"SRename this field "temp_min" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(öú–›
+m	java:S116
+"SRename this field "temp_max" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ĞØ‹ûûÿÿÿÿ
