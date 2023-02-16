@@ -4,11 +4,11 @@
 	import github from '$lib/images/github.svg';
 </script>
 
-<header>
+<header class="header">
 	<div class="corner">
-<!--		<a href="https://kit.svelte.dev">-->
-<!--			<img src={logo} alt="SvelteKit" />-->
-<!--		</a>-->
+		<!-- <a href="https://kit.svelte.dev">
+			<img src={logo} alt="SvelteKit" />
+		</a> -->
 	</div>
 
 	<nav>
@@ -32,12 +32,12 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/MartinBlazek6/WeatherReport"
-		target="_blank">
+		<a href="https://github.com/MartinBlazek6/WeatherReport" target="_blank">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>
 </header>
+
 
 <style>
 	header {

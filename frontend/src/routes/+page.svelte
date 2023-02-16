@@ -34,11 +34,16 @@ async function fetchData() {
 
 </script>
 
-<h2>Search Weather report by region</h2>
-<input type="text" bind:value={parameter} on:input={handleSubmit} placeholder="Enter region name"/>
-
-<h2>Search Weather report by City</h2>
-<input type="text" bind:value={city} on:input={fetchData} placeholder="Enter city name"/>
+<div class="search-container">
+    <div>
+        <h2>Search Weather report by region</h2>
+        <input type="text" bind:value={parameter} on:input={handleSubmit} placeholder="Enter region name"/>
+    </div>
+    <div>
+        <h2>Search Weather report by City</h2>
+        <input type="text" bind:value={city} on:input={fetchData} placeholder="Enter city name"/>
+    </div>
+</div>
 
 {#if data}
     <h1>Weather report for city {data.name}</h1>
@@ -258,6 +263,37 @@ async function fetchData() {
         50% { background-image: linear-gradient(to bottom right, #81D4FA, #B3E5FC); }
         100% { background-image: linear-gradient(to bottom right, #B3E5FC, #81D4FA); }
     }
+    .search-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .search-container > div {
+        width: 45%;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        margin: 1em 0;
+    }
+
+    input {
+        display: block;
+        font-size: 1em;
+        padding: 0.5em;
+        margin-bottom: 1em;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
 
 
 </style>

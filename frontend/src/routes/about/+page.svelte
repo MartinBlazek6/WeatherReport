@@ -52,19 +52,77 @@
 
 <div class="text-column">
 
-	<form on:submit|preventDefault={() => {
-  sendString(stringValue)
-    .then(data => {
-      console.log('String sent successfully:', data);
-    });
-}}>
-		<input type="text" bind:value={stringValue}/>
-		<button type="submit">Add City</button>
+	<form class="form" on:submit|preventDefault={() => {
+	  sendString(stringValue)
+	    .then(data => {
+	      console.log('String sent successfully:', data);
+	    });
+	}}>
+		<input class="form-input" type="text" bind:value={stringValue} placeholder="Enter a city"/>
+		<button class="form-button" type="submit">Add City</button>
 	</form>
 
-<!--	<input type="text" bind:value={countryCode} placeholder="SK" />-->
-	<button on:click={handleSubmit}>Get Weather</button>
+<!--	<button class="weather-button" on:click={handleSubmit}>Get Weather</button>-->
+
 	{#if errorMessage}
-		<p style="color: red">{errorMessage}</p>
+		<p class="error-message">{errorMessage}</p>
 	{/if}
+
 </div>
+
+<style>
+	.form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+
+	.form-input {
+		padding: 8px;
+		font-size: 16px;
+		border-radius: 4px;
+		border: 1px solid #ccc;
+		margin-bottom: 12px;
+		width: 100%;
+		max-width: 400px;
+	}
+
+	.form-button {
+		padding: 8px;
+		font-size: 16px;
+		border-radius: 4px;
+		border: none;
+		background-color: #007bff;
+		color: #fff;
+		width: 100%;
+		max-width: 400px;
+		cursor: pointer;
+	}
+
+	.form-button:hover {
+		background-color: #0069d9;
+	}
+
+	.weather-button {
+		padding: 8px;
+		font-size: 16px;
+		border-radius: 4px;
+		border: none;
+		background-color: #007bff;
+		color: #fff;
+		cursor: pointer;
+	}
+
+	.weather-button:hover {
+		background-color: #0069d9;
+	}
+
+	.error-message {
+		color: red;
+		font-size: 16px;
+		margin-top: 12px;
+	}
+
+</style>
