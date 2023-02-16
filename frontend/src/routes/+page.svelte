@@ -45,9 +45,6 @@ async function fetchData() {
     <br>
     <div>
         <div class="weather-card-lonely">
-            <div class="location">
-                <h2 >{data.name}</h2>
-            </div>
             <div class="coordinates">
                 <p>Longitude: <span >{data.weather.longitude}</span></p>
                 <p>Latitude: <span >{data.weather.latitude}</span></p>
