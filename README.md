@@ -6,7 +6,7 @@ This project fetches data from https://openweathermap.org/ and processes it with
 
 ## Demo
 
-![Demo](https://martinpersonalweb.vercel.app/_next/image?url=%2Fimages%2FWeatherReportGIF.gif&w=3840&q=75)
+![Demo](https://martinpersonalweb.vercel.app/_next/image?url=%2Fimages%2FweatherReport.gif&w=3840&q=75)
 
 
 ## Internal API Reference
